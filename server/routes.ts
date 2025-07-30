@@ -8,32 +8,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/auth/login", async (req, res) => {
     try {
       const { username, password } = loginSchema.parse(req.body);
-      console.log(`🔍 Login attempt for username: ${username}`);
+      console.log(`🔍 محاولة تسجيل دخول: ${username}`);
       
       // Check if any teachers exist first
       const allTeachers = await storage.getAllTeachers();
-      console.log(`📊 Total teachers in storage: ${allTeachers.length}`);
+      console.log(`📊 عدد المعلمين في Supabase: ${allTeachers.length}`);
       
       if (allTeachers.length === 0) {
-        console.log("⚠️ No teachers found in storage, trying to create emergency teachers...");
-        // Try to create emergency teachers if none exist
-        const { ensureTeachersExist } = await import('./deployment-fix');
-        await ensureTeachersExist();
+        console.log("⚠️ لا يوجد معلمين في Supabase، جاري إنشاء المعلمين الأساسيين...");
+        const { initializeTeachers } = await import('./initialize-teachers');
+        await initializeTeachers();
       }
       
       const teacher = await storage.validateTeacher(username, password);
       
       if (!teacher) {
-        console.log(`❌ Authentication failed for username: ${username}`);
+        console.log(`❌ فشل تسجيل الدخول: ${username}`);
         return res.status(401).json({ message: "اسم المستخدم أو كلمة المرور غير صحيحة" });
       }
 
-      console.log(`✅ Authentication successful for: ${teacher.name}`);
+      console.log(`✅ تم تسجيل الدخول بنجاح: ${teacher.name}`);
       // Return teacher data without password
       const { password: _, ...teacherData } = teacher;
       res.json(teacherData);
     } catch (error) {
-      console.error("❌ Login error:", error);
+      console.error("❌ خطأ في تسجيل الدخول:", error);
       res.status(400).json({ message: "بيانات غير صالحة" });
     }
   });

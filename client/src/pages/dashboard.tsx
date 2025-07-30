@@ -49,11 +49,15 @@ export default function Dashboard() {
   const { data: students = [], isLoading: studentsLoading } = useQuery<Student[]>({
     queryKey: ["/api/teachers", teacher?.id, "students"],
     enabled: !!teacher,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 
   const { data: records = [], isLoading: recordsLoading } = useQuery<DailyRecord[]>({
     queryKey: ["/api/teachers", teacher?.id, "records"],
     enabled: !!teacher,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 
   if (!teacher) {

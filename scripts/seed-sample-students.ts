@@ -3,7 +3,7 @@ import type { InsertStudent } from "../shared/schema";
 
 async function seedSampleStudents() {
   try {
-    console.log("🌱 بدء إضافة طلاب تجريبيين...");
+    console.log("🌱 بدء إضافة طلاب تجريبيين إلى Supabase...");
     
     // الحصول على جميع المعلمين
     const teachers = await Promise.all([
@@ -85,9 +85,10 @@ async function seedSampleStudents() {
     console.log(`🎉 تم إضافة ${addedCount} طالب/ة بنجاح!`);
     console.log(`👦 طلاب الحلقات الرجالية: ${maleStudents.length}`);
     console.log(`👧 طالبات الحلقات النسائية: ${femaleStudents.length}`);
+    console.log("✅ جميع الطلاب محفوظين في Supabase بشكل دائم!");
     
   } catch (error) {
-    console.error("❌ خطأ عام في إضافة الطلاب:", error);
+    console.error("❌ خطأ في إضافة الطلاب إلى Supabase:", error);
   }
 }
 

@@ -29,12 +29,17 @@ export default function ParentsPortal() {
   // Get all students (public access)
   const { data: students = [], isLoading: studentsLoading } = useQuery<Student[]>({
     queryKey: ["/api/students"],
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    staleTime: 0, // Always fetch fresh data
   });
 
   // Get records for selected student
   const { data: studentRecords = [], isLoading: recordsLoading } = useQuery<DailyRecord[]>({
     queryKey: ["/api/students", selectedStudent?.id, "records"],
     enabled: !!selectedStudent,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 
   const filteredStudents = students.filter(student => {

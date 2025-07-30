@@ -3,15 +3,17 @@ import { storage } from "./storage";
 // تهيئة المعلمين الأساسيين
 export async function initializeTeachers() {
   try {
-    console.log("🚀 بدء تهيئة المعلمين في Supabase...");
+    console.log("🚀 بدء تهيئة المعلمين الأساسيين في Supabase...");
     
     // Check current teachers count first
     const existingTeachers = await storage.getAllTeachers();
-    console.log(`📊 معلمين موجودين في Supabase: ${existingTeachers.length}`);
+    console.log(`📊 المعلمين الموجودين حالياً: ${existingTeachers.length}`);
     
-    // إذا كان هناك معلمين موجودين، لا نحتاج لإضافة المزيد
-    if (existingTeachers.length >= 10) {
-      console.log("✅ المعلمين موجودين مسبقاً في Supabase");
+    // إذا كان هناك معلمين موجودين، لا نحتاج لإضافة المزيد  
+    if (existingTeachers.length >= 13) {
+      console.log("✅ جميع المعلمين موجودين مسبقاً في Supabase");
+      console.log(`👨‍🏫 معلمين الرجال: ${existingTeachers.filter(t => t.gender === 'male').length}`);
+      console.log(`👩‍🏫 معلمات النساء: ${existingTeachers.filter(t => t.gender === 'female').length}`);
       return;
     }
     
@@ -59,11 +61,13 @@ export async function initializeTeachers() {
     
     // التحقق من العدد النهائي
     const finalTeachers = await storage.getAllTeachers();
-    console.log(`📊 العدد النهائي للمعلمين في Supabase: ${finalTeachers.length}`);
-    console.log("✅ جميع البيانات محفوظة في Supabase بشكل دائم");
+    console.log(`📊 العدد النهائي للمعلمين: ${finalTeachers.length}`);
+    console.log(`👨‍🏫 معلمين الرجال: ${finalTeachers.filter(t => t.gender === 'male').length}`);
+    console.log(`👩‍🏫 معلمات النساء: ${finalTeachers.filter(t => t.gender === 'female').length}`);
+    console.log("✅ جميع البيانات محفوظة في Supabase بشكل دائم!");
     
   } catch (error) {
-    console.error("❌ خطأ في تهيئة المعلمين في Supabase:", error);
-    console.log("🔄 سيتم المحاولة مرة أخرى...");
+    console.error("❌ خطأ في تهيئة المعلمين:", error);
+    console.log("🔄 تأكد من اتصال Supabase وحاول مرة أخرى");
   }
 }
